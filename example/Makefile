@@ -17,6 +17,7 @@ test:
 	go test $$(go list ./... | grep -v /vendor/ | grep -v /cmd/)
 
 $(NAME).zip: lambda-proc
+	-upx -9 lambda-proc
 	zip -r $(NAME).zip lambda-proc index.js
 
 deploy: $(NAME).zip
