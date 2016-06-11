@@ -1,0 +1,29 @@
+{
+  "AWSTemplateFormatVersion" : "2010-09-09",
+
+  "Description" : "AWS CloudFormation Template to create a Lambda proc",
+
+  "Resources" : {
+    "SampleProc": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Handler": "index.handler",
+        "Role": "arn:aws:iam::362788145219:role/lambda_basic_execution",
+        "Code": {
+          "S3Bucket": "dstresearch",
+          "S3Key": "lambda/lambda.zip"
+        },
+        "Runtime": "nodejs",
+        "Timeout": "25"
+      }
+    }
+  },
+
+  "Outputs" : {
+    "LambdaProc" : {
+      "Value" : { "Fn::GetAtt" : ["SampleProc", "Arn"] },
+      "Description" : "Newly created application Lambda Proc's ARN"
+    }
+  }
+
+}

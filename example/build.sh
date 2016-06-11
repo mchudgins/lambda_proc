@@ -7,6 +7,8 @@ GOOS=linux go build -o main
 
 zip -r lambda.zip main index.js
 
+aws s3 cp lambda.zip s3://dstresearch/lambda/
+
 # upload lambda.zip as lambda function
 # echoes back values received as input on event object
 

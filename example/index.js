@@ -9,7 +9,7 @@ var child_process = require('child_process'),
 (function new_go_proc() {
 
 	// pipe stdin/out, blind passthru stderr
-	go_proc = child_process.spawn('./main', { stdio: ['pipe', 'pipe', process.stderr] });
+	go_proc = child_process.spawn('./lambda-proc', { stdio: ['pipe', 'pipe', process.stderr] });
 
 	go_proc.on('error', function(err) {
 		process.stderr.write("go_proc errored: "+JSON.stringify(err)+"\n");
@@ -73,4 +73,3 @@ exports.handler = function(event, context) {
 	})+"\n");
 
 }
-
