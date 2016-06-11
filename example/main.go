@@ -48,6 +48,7 @@ func main() {
 		var buf bytes.Buffer
 		log := log.New(&buf, "golang_sample", log.Lshortfile)
 
+		// if something in the query params is true, then
 		log.Printf("Version: %s\n", version)
 		log.Printf("Build Time: %s\n", buildTime)
 		log.Printf("Builder:  %s\n", builder)
@@ -58,7 +59,9 @@ func main() {
 			log.Printf("key: %s = %+v\n", key, value)
 		}
 
-		//		v["hello"] = "world"
+		// business logic goes here
+
+		//		build the response
 		s := Something{Hello: "world", World: "latest", Trace: TraceInfo{SubmittedInput: v, Log: buf.String()}}
 
 		return s, nil

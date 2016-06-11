@@ -1,5 +1,5 @@
-NAME := coolthings
-DESC := a nice toolkit of helpful things
+NAME := golang-sample
+DESC := sample Golang Lambda Proc
 PREFIX ?= usr/local
 VERSION := $(shell git describe --tags --always --dirty)
 GOVERSION := $(shell go version)
@@ -16,9 +16,11 @@ LDFLAGS := -X 'main.version=$(VERSION)' \
 test:
 	go test $$(go list ./... | grep -v /vendor/ | grep -v /cmd/)
 
-deploy: lambda-proc
-	zip -r lambda.zip lambda-proc index.js
-	aws lambda update-function-code --function golang-sample --zip-file fileb://$(PWD)/lambda.zip
+$(NAME).zip: lambda-proc
+	zip -r $(NAME).zip lambda-proc index.js
+
+deploy: $(NAME).zip
+	aws lambda update-function-code --function $(NAME) --zip-file fileb://$(PWD)/$(NAME).zip
 
 lambda-proc: main.go
 	GOOS=linux go build -ldflags "$(LDFLAGS)" -o lambda-proc main.go
@@ -36,12 +38,17 @@ create-stack:
 	@echo use the 'create-lambda-proc' target
 
 create-lambda-proc:
-	aws lambda create-function --function-name golang-sample2 \
+	aws lambda create-function --function-name $(NAME) \
 		--role arn:aws:iam::362788145219:role/lambda_basic_execution \
 		--handler index.handler \
-		--description "a Golang example" \
+		--description "$(DESC)" \
 		--runtime nodejs4.3 \
-		--zip-file fileb://$(PWD)/lambda.zip
+		--zip-file fileb://$(PWD)/$(NAME).zip
+
+invoke:
+	aws lambda invoke --function-name $(NAME) \
+		--payload '{ "greek" : "oopah" }' \
+		/dev/stdout
 
 clean:
-	rm lambda-proc
+	-@rm lambda-proc *.zip
