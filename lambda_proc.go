@@ -38,9 +38,9 @@ type (
 		RequestId int `json:"proc_req_id"`
 		// Any errors that occur during processing
 		// or are returned by handlers are returned
-		Error *string `json:"error"`
+		Error *string `json:"error,omitempty"`
 		// General purpose output data
-		Data interface{} `json:"data"`
+		Data interface{} `json:"data,omitempty"`
 	}
 )
 
