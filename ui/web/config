@@ -1,0 +1,55 @@
+# see github.com/piranha/gostatic
+#
+# run `make' to build the site
+#
+TEMPLATES = site.tmpl templates
+SOURCE = src
+OUTPUT = site
+BUILD = dev
+TITLE = Example
+URL = http://localhost:8000
+AUTHOR = M C Hudgins
+JS_PATH = //localhost:8000/js
+CSS_PATH = //localhost:8000/css
+IMG_PATH = //localhost:8000/images
+# look into integrity=... and crossorigin=... (see:getbootstrap.com/getting-started/)
+RESOURCE_MAP = bootstrap.css : //maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css
+RESOURCE_MAP = bootstrap.js : //maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js
+RESOURCE_MAP = jquery.js : //code.jquery.com/jquery-2.1.4.min.js
+RESOURCE_MAP = angular.js : //ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js
+RESOURCE_MAP = angular-route.js : //ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-route.min.js
+RESOURCE_MAP = favicon.ico : //www.example.com/images/favicon.ico
+
+homepage.html: blog/*.md
+	config
+	inner-template
+	template homepage
+	rename index.html
+
+*.html:
+	config
+	inner-template
+	template page
+
+blog/*.md:
+	config
+	ext .html
+	directorify
+	tags tags/*.tag
+	markdown
+	template post
+	template page
+
+*.tag: blog/*.md
+	ext .html
+	directorify
+	template tag
+	markdown
+	template page
+
+blog.atom: blog/*.md
+	inner-template
+
+*.css:
+	config
+	inner-template

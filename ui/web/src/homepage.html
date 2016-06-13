@@ -1,0 +1,74 @@
+title: Main
+----
+
+<div class="row top-menu">
+  <div class="col-md-2">
+    <button type="button" class="btn btn-lg top" >
+      <a href="{{ .Site.Other.Url }}">
+        <span class="glyphicon glyphicon-lock"></span>
+      </a>
+    </button>
+  </div>
+  <div class="col-md-2">
+    <p class="text-center top"><a href="{{ .Site.Other.Url }}/newWidget">New Widget</a></p>
+  </div>
+  <div class="col-md-2">
+    <p class="text-center top"><a href="{{ .Site.Other.Url }}/widgets">Look at Widgets</a></p>
+  </div>
+  <div class="col-md-2">
+    <p class="text-center top"><a href="{{ .Site.Other.Url }}/docs">Documentation</a></p>
+  </div>
+  <div class="col-md-2">
+    <p class="text-center top"><a href="{{ .Site.Other.Url }}/blog">Blog</a></p>
+  </div>
+  <div class="col-md-2">
+    <img class="center-block" src="{{ staticURL "/logo-lg.png" }}" height="114" width="178" alt="Example.com">
+  </div>
+</div>
+
+<div class="jumbotron">
+  <h1>Example Application</h1>
+  <h2>Manage your Widgets</h2>
+</div>
+
+<h1>Get Started</h1>
+
+<p class="lead">
+  Tell 'em how lucky they are to have a browser pointed in this direction.
+</p>
+
+<div class="row">
+  <div class="col-md-9" role="main">
+    <div class="col-md-4">
+      <h1 class="page-header">Create</h1>
+      <p class="lead">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nec euismod erat. Nam dictum leo a mauris tincidunt, at tristique arcu vehicula. Aliquam mattis blandit accumsan. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Maecenas ut ligula ex.</p>
+      <p><a href="{{ .Site.Other.Url }}/newWidget" class="btn btn-lg btn-outline">
+        Create A Widget</a></p>
+
+    </div>
+    <div class="col-md-4">
+      <h1 class="page-header">Start at the Top</h1>
+      <p class="lead">Get something else here.
+      Nullam id enim nec lacus elementum egestas id in mauris. Ut tincidunt vehicula est at
+      fringilla.</p>
+      <p><a href="{{ .Site.Other.Url }}/widgets.html" class="btn btn-lg btn-outline">
+         fringilla</a></p>
+
+    </div>
+    <div class="col-md-4">
+      <h1 class="page-header">Learn More</h1>
+      <p class="lead">Tomorrow vee come back und cut off your chonson. Walter, you can't do that. These guys're like me, they're pacifists. Smokey was a conscientious objector. You got the wrong guy. I'm the Dude, man. I'm not Mr. Lebowski; you're Mr. Lebowski. I'm the Dude. I got a nice quiet beach community here, and I aim to keep it nice and quiet. Vee belief in nossing. Okay. Vee take ze money you haf on you und vee call it eefen.</p>
+      <p><a href="{{ .Site.Other.Url }}/docs" class="btn btn-lg btn-outline">
+        Documentation</a></p>
+
+    </div>
+  </div>
+
+<div class="col-md-3" role="complementary">
+  <h3>Updates</h3>
+{{ range .Site.Pages.Children "blog/" }}
+  <p><span class="minor"{{ template "date" .Date }} -</span> <a href="{{ $.Rel .Url }}">{{ .Title }}</a></p>
+{{ end }}
+
+</div>

@@ -1,0 +1,26 @@
+title: Index
+apiEndpoint: https://api.dstresearch.com/v1
+scripts: angular.js, angular-route.js, /widgets.js
+something: good
+----
+
+<section>
+<h2>Widgets</h2>
+
+<div ng-controller="ListControl">
+  <p>Angular says the API URL is:  [[ x ]]</p>
+  <div class="row header">
+    <div class="col-md-4">Name</div>
+    <div class="col-md-4">Active Widgets</div>
+  </div>
+  <div class="row" ng-repeat="item in list.widgets">
+    <div class="col-md-4">
+      <a href="//{{ .Site.Other.Url }}/widgets/[[item.name]]">[[ item.name ]]</a>
+    </div>
+    <div class="col-md-4">
+      [[item.count]]
+    </div>
+  </div>
+</div>
+
+</section>
