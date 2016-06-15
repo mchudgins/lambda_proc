@@ -85,7 +85,7 @@ func main() {
 		// business logic goes here
 
 		//		build the response
-		s := Something{Hello: "world", World: "latest"}
+		s := Something{Hello: context.FunctionName, World: context.FunctionVersion}
 
 		// if '?trace' in the query params is true, then
 		// allow the log to be returned to the user.
