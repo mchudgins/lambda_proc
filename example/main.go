@@ -26,6 +26,18 @@ type Something struct {
 	Trace *TraceInfo `json:"trace,omitempty"`
 }
 
+// APIEvent is a mapping of the Lambda event data from an API Gateway invocation.
+// In this specific case, we use the API Gateway's Integration "mapping template"
+// to map to a specific structure, rather than a map[string]interface{}
+type APIEvent struct {
+	Body        interface{}       `json:"body,omitempty"`
+	Method      string            `json:"method"`
+	Stage       string            `json:"stage"`
+	URL         string            `json:"url"`
+	Headers     map[string]string `json:"headers,omitempty"`
+	QueryParams map[string]string `json:"query,omitempty"`
+}
+
 var (
 	// boilerplate variables for good SDLC hygiene.  These are auto-magically
 	// injected by the Makefile & linker working together.
@@ -47,26 +59,26 @@ func main() {
 			return nil, err
 		}
 
-		// check the query params
-		if q, ok := v["query"]; ok {
-			query := q.(map[string]interface{})
+		var evt APIEvent
+		if err := json.Unmarshal(eventJSON, &evt); err != nil {
+			return nil, err
+		}
+		log.Printf("Event:  %+v\n", evt)
 
-			// is 'trace' set?
-			val, ok := query["trace"].(string)
-			if ok {
-				val = strings.ToLower(val)
-				log.Printf("trace query param: '%s'", val)
-				if strings.Compare(val, "yes") == 0 ||
-					strings.Compare(val, "true") == 0 ||
-					strings.Compare(val, "on") == 0 ||
-					strings.Compare(val, "") == 0 {
-					fTrace = true
-				}
+		// check the query params
+		if val, ok := evt.QueryParams["trace"]; ok {
+			val = strings.ToLower(val)
+			log.Printf("trace query param: '%s'", val)
+			if strings.Compare(val, "yes") == 0 ||
+				strings.Compare(val, "true") == 0 ||
+				strings.Compare(val, "on") == 0 ||
+				strings.Compare(val, "") == 0 {
+				fTrace = true
 			}
 		}
 
 		// some boilerplate logging.  Move to Init(), rather
-		// than every request.
+		// than every request?
 		var buf bytes.Buffer
 		log := log.New(&buf, "golang_sample", log.Lshortfile)
 
