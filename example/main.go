@@ -37,11 +37,10 @@ var (
 
 func main() {
 
-	var fTrace bool
-
 	// Define and run the Lambda function
 	lambda_proc.Run(func(context *lambda_proc.Context, eventJSON json.RawMessage) (interface{}, error) {
 
+		var fTrace bool
 		var v map[string]interface{}
 
 		if err := json.Unmarshal(eventJSON, &v); err != nil {
@@ -56,6 +55,7 @@ func main() {
 			val, ok := query["trace"].(string)
 			if ok {
 				val = strings.ToLower(val)
+				log.Printf("trace query param: '%s'", val)
 				if strings.Compare(val, "yes") == 0 ||
 					strings.Compare(val, "true") == 0 ||
 					strings.Compare(val, "on") == 0 ||
