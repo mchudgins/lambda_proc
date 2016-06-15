@@ -38,10 +38,15 @@ app.controller('NewWidgetForm', function( $scope, $http ) {
     } );
   };
 
-  $http.get( apiEndpoint + "/widgets" )
+  $http.get( apiEndpoint + "/widgets?trace" )
     .success( function( data ){
       $scope.widgets = data.widgets;
-      $scope.form = { subzone : "." + data.widgets[ 0 ] };
+      //$scope.form = { subzone : "." + data.widgets[ 0 ] };
+      $scope.form = { hello : data.data.hello };
+      var log = data.data.trace.log;
+      data.data.trace.log="";
+      $scope.trace = JSON.stringify(data, null, 4);
+      $scope.log = log;
       $scope.server = "";
     })
 });
