@@ -23,8 +23,8 @@ $(NAME).zip: lambda-proc
 deploy: $(NAME).zip
 	aws lambda update-function-code --function $(NAME) --zip-file fileb://$(PWD)/$(NAME).zip
 
-lambda-proc: main.go
-	GOOS=linux go build -ldflags "$(LDFLAGS)" -o lambda-proc main.go
+lambda-proc: main.go widgets.go daoLists.go
+	GOOS=linux go build -ldflags "$(LDFLAGS)" -o lambda-proc $^
 
 coverage:
    @-go test -v -coverprofile=cover.out $$(go list ./... | grep -v /vendor/ | grep -v /cmd/)

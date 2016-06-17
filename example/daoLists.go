@@ -39,11 +39,16 @@ type ListRecordKey struct {
 type ListRecord struct {
 	ListRecordKey
 	LastUpdated string
-	ListItems   string
+	ListItems   []string
 }
 
 var awsRegion = flag.String("region", "us-east-1", "AWS region")
 var svc = dynamodb.New(session.New(&aws.Config{Region: awsRegion}))
+var Lists *DaoLists
+
+func init() {
+	Lists, _ = NewDaoLists()
+}
 
 // NewDaoBuilds are used to perform CRUD operations on Builds
 func NewDaoLists() (*DaoLists, error) {
@@ -71,9 +76,13 @@ func parseListRecordKey(key string) (customerID string, listName string, err err
 }
 
 func (dao *DaoLists) Persist(obj *List) error {
+	if dao == nil {
+		return fmt.Errorf("dao is nil!")
+	}
 
 	o := &ListRecord{
 		ListRecordKey: ListRecordKey{UserID_ListName: formatListRecordKey(obj.ListKey)},
+		ListItems:     obj.Items,
 		LastUpdated:   time.Now().Format(time.RFC3339Nano),
 	}
 
@@ -100,6 +109,10 @@ func (dao *DaoLists) Persist(obj *List) error {
 }
 
 func (dao *DaoLists) Fetch(customerID string, listName string) (*List, error) {
+	if dao == nil {
+		return nil, fmt.Errorf("dao is nil!")
+	}
+
 	key := ListKey{CustomerID: customerID, ListName: listName}
 	o := &ListRecordKey{
 		UserID_ListName: formatListRecordKey(key),

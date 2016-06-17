@@ -95,6 +95,18 @@ func main() {
 		}
 
 		// business logic goes here
+		switch strings.ToLower(evt.URL) {
+		case "/widgets":
+			log.Printf("URL: /widgets\n")
+			response, err := ProcessWidgets(context, evt)
+			return response, err
+
+		case "":
+			log.Printf("URL: /\n")
+
+		default:
+			log.Printf("URL: %s (unexpected!)\n", evt.URL)
+		}
 
 		//		build the response
 		s := Something{Hello: context.FunctionName, World: context.FunctionVersion}

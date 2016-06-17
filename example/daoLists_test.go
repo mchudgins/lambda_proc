@@ -1,6 +1,9 @@
 package main
 
-import "testing"
+import (
+	"fmt"
+	"testing"
+)
 
 func TestCreate(t *testing.T) {
 	cases := []struct {
@@ -17,6 +20,9 @@ func TestCreate(t *testing.T) {
 	}
 
 	for _, c := range cases {
+		c.in.Items = make([]string, 25)
+		c.in.Items[0] = "Item 1"
+		c.in.Items[1] = "Item 2"
 		err = dao.Persist(&c.in)
 		if err != nil {
 			t.Errorf("unable to persist: %v", err)
@@ -46,5 +52,6 @@ func TestFetch(t *testing.T) {
 		if obj.CustomerID != c.expect {
 			t.Errorf("expected %s but got %+v", c.expect, obj.CustomerID)
 		}
+		fmt.Printf("List:  %+v\n", obj)
 	}
 }
